@@ -1,13 +1,20 @@
 import { TaskType } from './App';
 import Button from './Button';
+import { FilterValueType } from './App';
 
 type TodolistPropsType = {
     title: string;
     tasks: TaskType[];
     removeTasks: (taskId: number) => void;
+    changeFilter: (newFilterValue: FilterValueType) => void;
 };
 
-function TodoList({ title, tasks, removeTasks }: TodolistPropsType) {
+function TodoList({
+    title,
+    tasks,
+    removeTasks,
+    changeFilter,
+}: TodolistPropsType) {
     const tasksList =
         tasks.length === 0
             ? 'задачи отсутствуют'
@@ -32,9 +39,15 @@ function TodoList({ title, tasks, removeTasks }: TodolistPropsType) {
             </div>
             <ul>{tasksList}</ul>
             <div>
-                <Button title="All" />
-                <Button title="Active" />
-                <Button title="Completed" />
+                <Button title="All" callBack={() => changeFilter('all')} />
+                <Button
+                    title="Active"
+                    callBack={() => changeFilter('active')}
+                />
+                <Button
+                    title="Completed"
+                    callBack={() => changeFilter('completed')}
+                />
             </div>
         </div>
     );
