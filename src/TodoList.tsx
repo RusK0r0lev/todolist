@@ -3,18 +3,25 @@ import Button from './Button';
 
 type TodolistPropsType = {
     title: string;
-    tasks: Array<TaskType>;
+    tasks: TaskType[];
+    removeTasks: (taskId: number) => void;
 };
 
-function TodoList({ title, tasks }: TodolistPropsType) {
-    const tasksList = tasks.map((task) => {
-        return (
-            <li key={task.id}>
-                <input type="checkbox" checked={task.isDone} />
-                <span>{task.title}</span>
-            </li>
-        );
-    });
+function TodoList({ title, tasks, removeTasks }: TodolistPropsType) {
+    const tasksList =
+        tasks.length === 0
+            ? 'задачи отсутствуют'
+            : tasks.map((tasks: TaskType) => {
+                  return (
+                      <li key={tasks.id}>
+                          <input type="checkbox" checked={tasks.isDone} />
+                          <span>{tasks.title}</span>
+                          <button onClick={() => removeTasks(tasks.id)}>
+                              x
+                          </button>
+                      </li>
+                  );
+              });
 
     return (
         <div className="todoList">
@@ -23,7 +30,7 @@ function TodoList({ title, tasks }: TodolistPropsType) {
                 <input />
                 <Button title="+" />
             </div>
-            {tasks.length === 0 ? 'задачи отсутствуют' : <ul>{tasksList}</ul>}
+            <ul>{tasksList}</ul>
             <div>
                 <Button title="All" />
                 <Button title="Active" />
