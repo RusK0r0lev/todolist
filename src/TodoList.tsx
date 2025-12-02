@@ -1,12 +1,14 @@
 import { TaskType } from './App';
 import Button from './Button';
 import { FilterValueType } from './App';
+import { ChangeEvent, useState } from 'react';
 
 type TodolistPropsType = {
     title: string;
     tasks: TaskType[];
-    removeTasks: (taskId: number) => void;
+    removeTasks: (taskId: string) => void;
     changeFilter: (newFilterValue: FilterValueType) => void;
+    addTask(title: string): void;
 };
 
 function TodoList({
@@ -14,6 +16,7 @@ function TodoList({
     tasks,
     removeTasks,
     changeFilter,
+    addTask,
 }: TodolistPropsType) {
     const tasksList =
         tasks.length === 0
@@ -30,12 +33,21 @@ function TodoList({
                   );
               });
 
+    const [input, setInput] = useState('');
+
+    function onChangeInputHandler(event: ChangeEvent<HTMLInputElement>) {
+        setInput(event.currentTarget.value);
+    }
+    function onClickButtonHandler() {
+        addTask(input), setInput(' ');
+    }
+
     return (
         <div className="todoList">
             <h3>{title}</h3>
             <div>
-                <input />
-                <Button title="+" />
+                <input value={input} onChange={onChangeInputHandler} />
+                <Button title="+" callBack={() => onClickButtonHandler()} />
             </div>
             <ul>{tasksList}</ul>
             <div>
